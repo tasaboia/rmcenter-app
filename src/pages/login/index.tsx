@@ -39,7 +39,7 @@ export default function Login() {
         style={styles.background}
       />
       <View>
-        <Image style={styles.logo} source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
+        <Image style={styles.logo} source={require('./images/logoTransparent.png')}/>
       </View>
       <UITextInput 
             placeholder='Digite seu e-mail' 
@@ -72,13 +72,12 @@ export default function Login() {
               height:40,
               alignSelf: 'center',
               }}
-              source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
+              source={require("./images/Facebook-icon.png")} />
         </View>
         <View style={styles.iconBackground}>
           <Image 
             style={styles.icon}
-            source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
-            />
+            source={require("./images/Google-icon.png")} />
         </View>
       </View>
     </View>
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     height: 100,
     alignSelf: "center",
     marginTop: 100,
-    margin: 10,
+    margin: 30,
   },
   footer:{
     backgroundColor: '#83C6A6',
