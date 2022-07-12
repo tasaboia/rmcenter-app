@@ -1,37 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import {  StyleSheet, Text, View, Image, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import UITextInput from '../../components/UITextInput';
-import UIButton from '../../components/UIButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from '@react-navigation/native';
-import { useAuth } from '../../context';
+import UITextInput from '../../components/UITextInput';
+import UIButton from '../../components/UIButton';
 
 const initialValues = {
-  email:'',
-  password:'',
+    name: '',
+    email:'',
+    password:'',
 }
-const SignupSchema = Yup.object().shape({
+const RegisterSchema = Yup.object().shape({
+  name: Yup.string().required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().required('Required')
 });
 
-export default function Login() {
-  const {login, user} = useAuth() 
+export default function Register({navigation}) {
   return (
   <Formik
     initialValues={initialValues}
-    validationSchema={SignupSchema}
+    validationSchema={RegisterSchema}
     onSubmit={async values => {
       try{
-        const resp = login(values.email, values.password)
+        console.log("Successful")
+        navigation.navigate('Successful')
       }catch(err){
         console.log(err)
       }
     }}
   >
-    {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+    {({ handleChange, handleBlur, handleSubmit, values , errors, touched}) => (
     <>
     <View style={styles.container}>
       <LinearGradient
@@ -42,34 +43,38 @@ export default function Login() {
       />
       <Image style={styles.logo} source={require('../images/logoTransparent.png')}/>
 
-    
+      <Text style={styles.title}>Criar sua conta</Text>
+      <TextInput
+        style={ errors.name ? styles.inputError : styles.input} 
+        placeholderTextColor= '#102A41'
+        placeholder='Digite seu nome' 
+        onChangeText={handleChange('name')}
+        onBlur={handleBlur('name')}
+        value={values.name}
+        />
       <TextInput 
         style={ errors.email ? styles.inputError : styles.input}
+        placeholderTextColor= '#102A41'
         placeholder='Digite seu e-mail' 
         onChangeText={handleChange('email')}
         onBlur={handleBlur('email')}
         value={values.email}
-      />
+        />
 
-      <TextInput 
+      <TextInput
         style={ errors.password ? styles.inputError : styles.input}
+        placeholderTextColor= '#102A41'
         placeholder='Digite sua senha'
         secureTextEntry={true} 
         onChangeText={handleChange('password')}
         onBlur={handleBlur('password')}
         value={values.password}
       />
-      <Link style={styles.linkPassword} to={{ screen: 'ForgotPassword' }}>Esqueceu sua senha?</Link>
-      <UIButton title='Entrar' onPress={handleSubmit}/>
-      <Link to={{screen: 'Register'}} style={styles.link}>Ainda não tem uma conta?</Link>
+      <UIButton title='Cadastrar' onPress={handleSubmit}/>
+      <Link to={{screen: 'Login'}} style={styles.link}>Já tem uma conta? Entrar </Link>
       <StatusBar style="auto" />
     </View>
-    <View style={styles.footer}>
-
-    <Text >Entrar usando</Text>
-
-    </View>
-
+   
     </>)}
   </Formik>
 )}
@@ -78,6 +83,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#83C6A6',
     alignItems: 'center',
+  },
+  title: {
+    color: '#53866E',
+     alignSelf: 'flex-start',
+      marginStart: 80, 
+      fontSize: 18, 
+      margin: 2
   },
   background: {
     zIndex: -1,
@@ -123,17 +135,10 @@ const styles = StyleSheet.create({
     margin:3,
     marginBottom: 30
   },
-  linkPassword: {
-    marginLeft:10, 
-    color: '#535D66', 
-    alignSelf: 'flex-start',
-    marginStart: 80
-  },
   link: {
     alignSelf: "center",
     marginTop: 10, 
     color: '#535D66'
-    
   },
   input: {
     height: 40,
@@ -145,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'white',
     },
-  inputError: {
+inputError: {
     height: 40,
     width: '60%',
     minWidth: 150,
