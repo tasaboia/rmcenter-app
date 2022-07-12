@@ -16,7 +16,10 @@ export default function UITextInput(props: JSX.IntrinsicAttributes & JSX.Intrins
 const styles = StyleSheet.create({
     input: {
       height: 40,
-      margin: 6,
+      width: '60%',
+      minWidth: 150,
+      maxHeight: 350,
+      margin: 4,
       padding: 10,
       borderRadius: 10,
       backgroundColor: 'white'

@@ -1,20 +1,7 @@
-import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { NativeBaseProvider } from 'native-base';
-import Routes from './src/routes';
-import { AuthProvider } from './src/context';
-
-const queryClient = new QueryClient()
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import Login from './src/pages/login';
 
 export default function App() {
-  
-  return (
-    <QueryClientProvider client={queryClient}>
-      <NativeBaseProvider>
-        <AuthProvider>
-          <Routes/>
-        </AuthProvider>
-      </NativeBaseProvider>
-    </QueryClientProvider>
-  )
+  return <Login/>
 }

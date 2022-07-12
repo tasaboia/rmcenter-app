@@ -1,17 +1,11 @@
-import React from 'react'
+import { StatusBar } from 'expo-status-bar';
+import {  StyleSheet, Text, View, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import UITextInput from '../../components/UITextInput';
+import UIButton from '../../components/UIButton';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from '@react-navigation/native';
-import {StyleSheet , Text, View, Image } from 'react-native';
-
-import { useMutation } from 'react-query';
-
-import { LinearGradient } from 'expo-linear-gradient';
-import { Auth } from '../../service/Auth';
-import UIButton from '../../components/UIbutton';
-import UITextInput from '../../components/UITextInput';
-import { useAuth } from '../../context';
-import { SaveStorage } from '../../service/storage/storage';
 
 const initialValues = {
   email:'',
@@ -22,95 +16,82 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string().required('Required')
 });
 
-const config = {
-  dependencies: {
-    "linear-gradient": LinearGradient
-  }
-};
-export default function Login({navigation}: any) {
-  const {login, user} = useAuth() 
-  const mutation = useMutation(Auth, {
-    onSuccess: () => {
-      }
-  })
-
+export default function Login() {
   return (
   <Formik
     initialValues={initialValues}
     validationSchema={SignupSchema}
     onSubmit={async values => {
       try{
-        const resp = login(values.email, values.password)
-
-       
-
+        console.log("aqui")
       }catch(err){
         console.log(err)
       }
     }}
   >
     {({ handleChange, handleBlur, handleSubmit, values }) => (
-        <LinearGradient
-        // Background Linear Gradient
-          colors={ ["#83C6A6", "#F9E385"]}
-          start ={[0,1]}
-          end = {[0, 0]}
-          style={styles.background}
-      >
-        <Image 
-            style={styles.logo}
-            source={require("../../../assets/logo-transparent.png")} />
-        <View style={styles.container}>
+    <>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={ ["#83C6A6", "#F9E385"]}
+        start ={[0,1]}
+        end = {[0, 0]}
+        style={styles.background}
+      />
+      <View>
+        <Image style={styles.logo} source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
+      </View>
+      <UITextInput 
+            placeholder='Digite seu e-mail' 
+            onChangeText={handleChange('email')}
+            onBlur={handleBlur('email')}
+            value={values.email}
+          />
 
-            <UITextInput 
-              placeholder='Digite seu e-mail' 
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              value={values.email}
-            />
+      <UITextInput 
+        placeholder='Digite sua senha'
+        secureTextEntry={true} 
+        onChangeText={handleChange('password')}
+        onBlur={handleBlur('password')}
+        value={values.password}
+      />
+      <Link style={{marginLeft:10, color: '#535D66', alignSelf: 'flex-start', marginStart: 80 }} to={{ screen: 'ForgotPassword' }}>Esqueceu sua senha?</Link>
+      <UIButton title='Entrar' onPress={handleSubmit}/>
+      <Link style={styles.link} to={{ screen: 'Register' }}>Ainda não tem uma conta?</Link>
+      <StatusBar style="auto" />
+    </View>
+    <View style={styles.footer}>
 
-            <UITextInput 
-              placeholder='Digite sua senha'
-              secureTextEntry={true} 
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              value={values.password}
-            />
+    <Text >Entrar usando</Text>
 
-            <Link style={{marginLeft:10, color: '#535D66'}} to={{ screen: 'ForgotPassword' }}>Esqueceu sua senha?</Link>
-
-             <UIButton title={"Entrar"} onPress={handleSubmit}/> 
-            <Link style={{alignSelf: "center", marginTop: 10, color: '#535D66'}} to={{ screen: 'Register' }}>Ainda não tem uma conta?</Link>
+      <View style={styles.footerIcons}>
+        <View style={styles.iconBackground}>
+          <Image 
+            style={{
+              width:40,
+              height:40,
+              alignSelf: 'center',
+              }}
+              source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}/>
         </View>
-        <Text style={{alignSelf: 'center'}}>Entrar usando</Text>
-        <View style={styles.footer}>
-          <View style={styles.iconBackground}>
-            <Image 
-              style={{
-                width:40,
-                height:40,
-                alignSelf: 'center',
-                }}
-              source={require("../../images/Facebook-icon.png")} />
-          </View>
-          <View style={styles.iconBackground}>
-            <Image 
-              style={styles.icon}
-              source={require("../../images/Google-icon.png")} />
-          </View>
+        <View style={styles.iconBackground}>
+          <Image 
+            style={styles.icon}
+            source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+            />
         </View>
-      </LinearGradient>
-     )}
-     </Formik>
-  )
-}
+      </View>
+    </View>
 
-
+    </>)}
+  </Formik>
+)}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 60,
-    paddingHorizontal: 65
+    backgroundColor: '#83C6A6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   background: {
     zIndex: -1,
@@ -118,7 +99,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height: "100vh",
+    height: 300,
   },
   text: {
     backgroundColor: 'transparent',
@@ -130,8 +111,15 @@ const styles = StyleSheet.create({
     height: 100,
     alignSelf: "center",
     marginTop: 100,
+    margin: 10,
   },
-  footer: {
+  footer:{
+    backgroundColor: '#83C6A6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerIcons: {
+    backgroundColor: '#83C6A6',
     flexDirection: 'row',
     justifyContent: 'center'
   },
@@ -148,6 +136,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin:3,
     marginBottom: 30
+  },
+  link: {
+    alignSelf: "center",
+     marginTop: 10, 
+     color: '#535D66'
   }
 });
-

@@ -17,6 +17,7 @@ export default function UIButton(props : IButtonProps) {
 const styles = StyleSheet.create({
   button: {
     
+    width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
